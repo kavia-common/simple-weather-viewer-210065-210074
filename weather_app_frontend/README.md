@@ -1,82 +1,62 @@
-# Lightweight React Template for KAVIA
+# Weather App Frontend (Ocean Professional)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A single-page React app to search for a location and display current weather. Runs in:
+- Real API mode using OpenWeatherMap (requires API key)
+- Mock mode when no API key is configured (deterministic sample data)
+
+No backend or database is required.
+
+## Quick Start
+
+1. Install dependencies
+   - npm install
+
+2. Run in development (mock mode if no API key)
+   - npm start
+
+3. Run tests
+   - npm test
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and set:
+
+- REACT_APP_OPENWEATHER_API_KEY=your_key_here
+
+If this variable is absent or empty, the app displays a "Mock mode" banner and uses deterministic mock data so previews still work without configuration.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Centered card layout with search bar and current weather (temp, conditions, icon, humidity, wind)
+- Ocean Professional theme (blue & slate accents, subtle shadows, rounded corners, gradients)
+- Input validation and user-friendly error messages
+- Client-side audit trail (localStorage) with timestamp, action (SEARCH/READ), query, outcome, message
+- Collapsible audit log panel with ability to clear
+- No backend dependencies
 
-## Getting Started
+## Structure
 
-In the project directory, you can run:
+- src/App.js: Main single-page app and layout
+- src/components/SearchBar.jsx: Input and submit UI + validation feedback
+- src/components/WeatherCard.jsx: Current weather display
+- src/components/AuditLogPanel.jsx: Collapsible client-side audit log
+- src/services/WeatherService.js: Real API mode and mock mode logic
+- src/utils/validation.js: Input validation utilities
+- src/utils/audit.js: Client-side audit logging utilities
+- src/styles/theme.js: Ocean Professional theme variables
 
-### `npm start`
+## Testing
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The project uses React Testing Library and Jest (via CRA).
+- Happy path: searches and displays weather (mock mode)
+- Validation: empty input shows error
+- Audit: verifies audit entries appear after a search
 
-### `npm test`
+Run:
+- npm test
 
-Launches the test runner in interactive watch mode.
+## Notes on Compliance (Lightweight Frontend-Only)
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Audit trail is best-effort and stored in localStorage (non-persistent across browsers/sessions), suitable for demo and non-regulated use without backend.
+- Pseudo-user id is "anonymous". Integrate real authentication and persistent audit service for regulated contexts.
+- No secrets are hardcoded; API key is read from environment variables.
