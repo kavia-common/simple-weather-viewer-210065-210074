@@ -4,10 +4,26 @@
   * Purpose: Integration tests for end-to-end flows in mock mode and error scenarios.
   */
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import * as WeatherService from "../services/WeatherService";
 import App from "../App";
 import { getAuditLog, clearAuditLog } from "../utils/audit";
+import { AuthProvider } from "../context/AuthContext";
+
+function renderWithAuth() {
+  return render(
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
+
+async function quickLoginAs(username = "jane") {
+  fireEvent.change(screen.getByLabelText("login-identifier"), { target: { value: username } });
+  fireEvent.change(screen.getByLabelText("login-password"), { target: { value: "Secret123" } });
+  fireEvent.click(screen.getByLabelText("login-submit"));
+  await screen.findByLabelText("city-input");
+}
 
 describe("App Integration Flows (GxP)", () => {
   beforeEach(() => {
@@ -18,8 +34,9 @@ describe("App Integration Flows (GxP)", () => {
     jest.restoreAllMocks();
   });
 
-  test("renders search and mock mode indicator", () => {
-    render(<App />);
+  test("renders search and mock mode indicator", async () => {
+    renderWithAuth();
+    await quickLoginAs();
     expect(screen.getByLabelText("city-input")).toBeInTheDocument();
     expect(screen.getByLabelText("search-button")).toBeInTheDocument();
     expect(screen.getByRole("note", { name: /mock-indicator/ })).toHaveTextContent(/Mock mode/i);
@@ -36,7 +53,9 @@ describe("App Integration Flows (GxP)", () => {
       iconUrl: "https://openweathermap.org/img/wn/01d@2x.png",
       mock: true,
     });
-    render(<App />);
+    renderWithAuth();
+    await quickLoginAs();
+
     fireEvent.change(screen.getByLabelText("city-input"), { target: { value: "Paris" } });
     fireEvent.click(screen.getByLabelText("search-button"));
 
@@ -51,7 +70,9 @@ describe("App Integration Flows (GxP)", () => {
   });
 
   test("validation error for empty query shown as alert", async () => {
-    render(<App />);
+    renderWithAuth();
+    await quickLoginAs();
+
     fireEvent.click(screen.getByLabelText("search-button"));
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent(/please enter a city name/i);
@@ -59,7 +80,9 @@ describe("App Integration Flows (GxP)", () => {
 
   test("error path: service throws, shows user-friendly message and logs error", async () => {
     jest.spyOn(WeatherService, "getCurrentWeatherByCity").mockRejectedValue(new Error("City not found. Please check the spelling."));
-    render(<App />);
+    renderWithAuth();
+    await quickLoginAs();
+
     fireEvent.change(screen.getByLabelText("city-input"), { target: { value: "Xyz" } });
     fireEvent.click(screen.getByLabelText("search-button"));
 
@@ -84,7 +107,8 @@ describe("App Integration Flows (GxP)", () => {
       }), 50))
     );
 
-    render(<App />);
+    renderWithAuth();
+    await quickLoginAs();
     fireEvent.change(screen.getByLabelText("city-input"), { target: { value: "Rome" } });
     fireEvent.click(screen.getByLabelText("search-button"));
 
@@ -95,8 +119,9 @@ describe("App Integration Flows (GxP)", () => {
     expect(card).toBeInTheDocument();
   });
 
-  test("handles special characters and long input via validation", () => {
-    render(<App />);
+  test("handles special characters and long input via validation", async () => {
+    renderWithAuth();
+    await quickLoginAs();
     fireEvent.change(screen.getByLabelText("city-input"), { target: { value: "Invalid!!" } });
     fireEvent.click(screen.getByLabelText("search-button"));
     expect(screen.getByRole("alert")).toHaveTextContent(/letters, spaces, hyphens, apostrophes, periods, or commas/i);

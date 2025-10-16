@@ -75,5 +75,18 @@ This matrix maps requirement IDs to implementation locations and associated test
 - Tests:
   - Visual/theming verified implicitly by component rendering tests.
 
+### REQ-FE-AUTH-001
+- Description: Frontend mock authentication with session management and audit logging; role-based access with admin-only route.
+- Implementation:
+  - src/context/AuthContext.jsx
+  - src/utils/auth.js
+  - src/components/Login.jsx
+  - src/components/AdminPanel.jsx
+  - src/App.js (protected views and nav)
+- Tests:
+  - src/__tests__/test_auth_utils.spec.js
+  - src/__tests__/test_auth_integration.spec.jsx
+  - Updated flows in src/App.test.js and src/__tests__/test_App_flows.spec.jsx
+
 Sources:
 - Code files and test files listed in each row above.

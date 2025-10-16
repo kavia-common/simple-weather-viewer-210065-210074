@@ -25,9 +25,10 @@ This is a frontend-only demonstration of GxP-oriented practices. It implements i
 - Error Handling
   - Location: src/services/WeatherService.js and src/App.js.
   - Behavior: Network and service errors converted into friendly messages. 404 → “City not found.”
-- Access Controls (Placeholder)
-  - No authentication/RBAC included in this demo.
-  - For GxP deployments: integrate SSO/OAuth, enforce role checks on privileged operations, secure storage of secrets, and server-side authorization.
+- Access Controls
+  - Frontend-only mock authentication with AuthContext; role checks via isAuthorized for 'user' and 'admin'.
+  - Events logged: AUTH_LOGIN (success/failure), AUTH_LOGOUT, AUTH_DENIED with timestamp and non-sensitive metadata.
+  - For GxP deployments: integrate SSO/OAuth, enforce role checks on privileged operations, secure storage of secrets, and server-side authorization. Replace client-side mock with server-verified tokens and persistent audit trail.
 
 ## Electronic Signatures (Placeholder)
 - Not implemented in this demo.

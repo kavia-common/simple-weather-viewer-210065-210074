@@ -5,12 +5,23 @@ This document describes the structure of the Weather App Frontend, including its
 
 ## High-Level Design
 The app is organized as a small React SPA:
-- App orchestrates the search flow, applies theme variables, renders the SearchBar and WeatherCard, and displays the AuditLogPanel.
+- App orchestrates the search flow, applies theme variables, renders the SearchBar and WeatherCard, and displays the AuditLogPanel. It now gates pages behind a mock authentication flow.
 - WeatherService provides two modes: real API calls to OpenWeatherMap or deterministic mock data when no API key is set.
 - Validation utilities ensure inputs conform to constraints before calling the service.
 - Audit utilities record actions into localStorage.
+- AuthContext manages client-side session, login/logout, and role checks. Login and Admin routes are provided in-app without a router.
 
 ## Data Flow
+Auth flow (mock):
+1. User lands on Login page (unauthenticated). Provides email/username and password.
+2. AuthContext.authenticate validates per AUTH_MODE:
+   - mock: accepts any non-empty credentials; role derived from identifier (admin* => admin).
+   - envUsers: verifies against REACT_APP_AUTH_USERS JSON string.
+3. On success, a session token (UUID) with userId, role, issuedAt, expiry (2h) is stored in localStorage (no password).
+4. Auth events logged: AUTH_LOGIN (success/failure), AUTH_LOGOUT, AUTH_DENIED (role checks).
+5. Weather page and Admin page are gated based on session/role.
+
+Weather flow:
 1. User enters a city name and submits via SearchBar.
 2. App validates the input. If invalid, an alert message is shown and service calls are not made.
 3. App logs a SEARCH action to the audit trail.

@@ -20,31 +20,38 @@ The coverage goal is 80% or higher for lines and statements. You can configure C
 
 ## Test Inventory
 - src/App.test.js
-  - Renders search UI and validates empty input errors.
-  - Executes a mock mode search and displays WeatherCard.
-  - Confirms audit log entries appear after a search.
+  - Renders login first; verifies login workflow then weather search UI is available
+  - Validates search validation and mock mode indicator
+  - Confirms audit log entries appear after a search
 - src/__tests__/test_App_flows.spec.jsx
-  - End-to-end flows in mock mode including happy path, validation, and error scenarios.
-  - Loading state disables controls.
-  - Validation of special characters and long input behavior.
+  - End-to-end flows in mock mode including happy path, validation, and error scenarios
+  - Loading state disables controls
+  - Validation of special characters and long input behavior
+  - Updated to authenticate before accessing protected screens
 - src/__tests__/test_AuditLogPanel.spec.jsx
-  - Toggle behavior for audit visibility.
-  - Rendering of entries with metadata.
-  - Clear button removes entries.
+  - Toggle behavior for audit visibility
+  - Rendering of entries with metadata
+  - Clear button removes entries
 - src/__tests__/test_GxP_compliance.spec.js
-  - GxP audit entries include userId, ISO timestamp, action, outcome.
-  - Validation prevents invalid input from reaching the service.
-  - Placeholder check for absence of privileged actions.
+  - GxP audit entries include userId, ISO timestamp, action, outcome
+  - Validation prevents invalid input from reaching the service
+  - Access control check: admin page denied for non-admin users
 - src/__tests__/test_SearchBar.spec.jsx
-  - Accessibility labels, validation errors, Enter key submission, busy state handling, boundary checks.
+  - Accessibility labels, validation errors, Enter key submission, busy state handling, boundary checks
 - src/__tests__/test_WeatherCard.spec.jsx
-  - Rendering metrics and labels, mock banner presence, null data behavior.
+  - Rendering metrics and labels, mock banner presence, null data behavior
 - src/__tests__/test_audit_utils.spec.js
-  - Audit entry structure, timestamp format, ordering, clear behavior, corrupted storage tolerance.
+  - Audit entry structure, timestamp format, ordering, clear behavior, corrupted storage tolerance
 - src/__tests__/test_validation_utils.spec.js
-  - Validation for null/undefined, whitespace, diacritics, length, character set.
+  - Validation for null/undefined, whitespace, diacritics, length, character set
 - src/__tests__/validation.test.js
-  - Additional validation checks for length and invalid characters.
+  - Additional validation checks for length and invalid characters
+- src/__tests__/test_weather_service.spec.js
+  - Service mock vs real mode behavior, error translations
+- src/__tests__/test_auth_utils.spec.js
+  - Auth mode detection, mock and envUsers auth, session create/get/clear, role checks
+- src/__tests__/test_auth_integration.spec.jsx
+  - Login success/failure, session persistence, logout, protected route redirect, admin access check
 
 ## Coverage Command
 - npm run test:coverage

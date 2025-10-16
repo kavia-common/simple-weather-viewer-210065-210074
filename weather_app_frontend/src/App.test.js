@@ -1,11 +1,26 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "./App";
+import { AuthProvider } from "./context/AuthContext";
 
 // Using mock mode (no API key), tests should be deterministic.
 
-test("renders search input and button", () => {
-  render(<App />);
-  expect(screen.getByLabelText("city-input")).toBeInTheDocument();
+function renderWithAuth() {
+  return render(
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
+
+test("renders login page initially (unauthenticated), then login and see search UI", async () => {
+  renderWithAuth();
+  expect(screen.getByLabelText("login-card")).toBeInTheDocument();
+  // Login
+  fireEvent.change(screen.getByLabelText("login-identifier"), { target: { value: "jane" } });
+  fireEvent.change(screen.getByLabelText("login-password"), { target: { value: "Secret123" } });
+  fireEvent.click(screen.getByLabelText("login-submit"));
+  // Weather UI appears
+  await screen.findByLabelText("city-input");
   expect(screen.getByLabelText("search-button")).toBeInTheDocument();
 });
 

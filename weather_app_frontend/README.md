@@ -2,6 +2,8 @@
 
 A single-page React application that lets users search for a city and view the current weather. The interface uses the Ocean Professional theme with a clean, modern layout and accessible controls. The app can run in either real API mode (OpenWeatherMap) or a deterministic mock mode, and it includes lightweight GxP-oriented controls such as input validation and a client-side audit trail.
 
+Now includes a frontend-only mock authentication system with Login, session management, and admin-only placeholder route. No backend is used; do not store secrets in code or logs.
+
 ## Contents
 - Overview
 - Quick Start
@@ -34,13 +36,23 @@ This is a React SPA with no backend or database. Weather data is provided by Ope
 Create .env from an example if needed and set the OpenWeatherMap API key:
 - REACT_APP_OPENWEATHER_API_KEY=your_key_here
 
-If REACT_APP_OPENWEATHER_API_KEY is absent or empty:
-- The app runs in mock mode.
-- A “Mock mode” pill is shown in the header and the WeatherCard displays a mock banner when applicable.
-- All requests use deterministic local mock data to support previews without configuration.
+Authentication (frontend-only):
+- AUTH_MODE=mock (default) or envUsers
+- REACT_APP_AUTH_USERS=[{"email":"admin@example.com","password":"Secret123!","role":"admin"}] (only used when AUTH_MODE=envUsers)
+
+Behavior:
+- If REACT_APP_OPENWEATHER_API_KEY is absent or empty:
+  - The app runs in weather mock mode.
+  - A “Mock mode” pill is shown in the header and the WeatherCard displays a mock banner when applicable.
+  - All requests use deterministic local mock data to support previews without configuration.
+- If AUTH_MODE=mock:
+  - Login accepts any non-empty email/username + password. Admin role is granted if the identifier starts with "admin".
+- If AUTH_MODE=envUsers:
+  - Login validates against REACT_APP_AUTH_USERS. Never commit real secrets to the repo.
 
 Where used in code:
 - src/services/WeatherService.js reads process.env.REACT_APP_OPENWEATHER_API_KEY to decide mode and construct URLs.
+- src/utils/auth.js reads AUTH_MODE/REACT_APP_AUTH_MODE and REACT_APP_AUTH_USERS to implement mock login.
 
 Note: Keep secrets out of the repo. Never commit real API keys.
 
