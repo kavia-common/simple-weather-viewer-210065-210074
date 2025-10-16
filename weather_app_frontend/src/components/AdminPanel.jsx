@@ -51,6 +51,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    padding: 12,
   },
   card: {
     width: "100%",

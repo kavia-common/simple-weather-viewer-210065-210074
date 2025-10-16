@@ -71,7 +71,7 @@ const styles = {
     right: 0,
     padding: "6px 10px",
     background:
-      "linear-gradient(90deg, rgba(59,130,246,0.1) 0%, rgba(100,116,139,0.1) 100%)",
+      "linear-gradient(90deg, rgba(59,130,246,0.12) 0%, rgba(100,116,139,0.10) 100%)",
     color: "var(--color-secondary)",
     fontSize: "12px",
     borderTopLeftRadius: "var(--radius-lg)",
@@ -96,8 +96,9 @@ const styles = {
     marginTop: "2px",
   },
   icon: {
-    width: "64px",
-    height: "64px",
+    width: "var(--icon-lg)",
+    height: "var(--icon-lg)",
+    objectFit: "contain",
   },
   metrics: {
     display: "grid",

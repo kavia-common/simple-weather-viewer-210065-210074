@@ -78,7 +78,9 @@ function App() {
         <span style={styles.logoDot} aria-hidden>●</span>
         <span style={styles.brandText}>Simple Weather</span>
         {isMockMode() && (
-          <div style={styles.mockPill} role="note" aria-label="mock-indicator">Mock mode</div>
+          <div style={styles.mockPill} role="note" aria-label="mock-indicator" title="Running without API key">
+            Mock mode
+          </div>
         )}
       </div>
       <div style={styles.navRight}>
@@ -158,7 +160,7 @@ const styles = {
   page: {
     minHeight: "100vh",
     background:
-      "linear-gradient(180deg, rgba(59,130,246,0.08) 0%, rgba(249,250,251,1) 100%)",
+      "linear-gradient(180deg, rgba(59,130,246,0.10) 0%, rgba(249,250,251,1) 100%)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -176,6 +178,10 @@ const styles = {
     borderRadius: "var(--radius-lg)",
     padding: "10px 14px",
     boxShadow: "var(--shadow-md)",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+    backdropFilter: "saturate(110%) blur(2px)",
   },
   brand: { display: "flex", alignItems: "center", gap: "8px" },
   logoDot: { color: "var(--color-primary)", fontSize: "20px" },
@@ -186,41 +192,49 @@ const styles = {
     border: "1px solid var(--color-border)",
     color: "var(--color-text)",
     borderRadius: "var(--radius-sm)",
-    padding: "6px 10px",
+    padding: "10px 12px",
     cursor: "pointer",
+    transition: "var(--transition-fast)",
+    outline: "none",
   },
   userBadge: {
-    padding: "4px 8px",
-    borderRadius: "999px",
+    padding: "6px 10px",
+    borderRadius: "var(--radius-pill)",
     background: "rgba(59,130,246,0.12)",
     color: "var(--color-secondary)",
     border: "1px solid var(--color-border)",
     fontSize: 12,
   },
   loginBtn: {
-    padding: "6px 10px",
+    padding: "10px 14px",
     color: "#fff",
     background: "var(--color-primary)",
-    border: "none",
+    border: "1px solid transparent",
     borderRadius: "var(--radius-sm)",
     cursor: "pointer",
+    transition: "var(--transition-fast)",
+    outline: "none",
   },
   logoutBtn: {
-    padding: "6px 10px",
+    padding: "10px 14px",
     color: "#fff",
     background: "var(--color-error)",
-    border: "none",
+    border: "1px solid transparent",
     borderRadius: "var(--radius-sm)",
     cursor: "pointer",
+    transition: "var(--transition-fast)",
+    outline: "none",
   },
   mockPill: {
     padding: "6px 10px",
-    borderRadius: "999px",
-    background: "rgba(59,130,246,0.12)",
+    borderRadius: "var(--radius-pill)",
+    background:
+      "linear-gradient(90deg, rgba(59,130,246,0.12) 0%, rgba(100,116,139,0.10) 100%)",
     color: "var(--color-secondary)",
     fontSize: "12px",
     border: "1px solid var(--color-border)",
     marginLeft: 8,
+    boxShadow: "var(--shadow-sm)",
   },
   card: {
     width: "100%",

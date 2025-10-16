@@ -35,6 +35,10 @@ export default function AuditLogPanel() {
         aria-controls="audit-content"
         onClick={() => setOpen(!open)}
         style={styles.toggle}
+        onMouseEnter={(e) => { e.currentTarget.style.background = "var(--color-secondary-hover)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = "var(--color-secondary)"; }}
+        onFocus={(e) => { e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`; }}
+        onBlur={(e) => { e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
       >
         {open ? "Hide" : "Show"} Audit Log
       </button>
@@ -42,7 +46,14 @@ export default function AuditLogPanel() {
         <div id="audit-content" style={styles.panel}>
           <div style={styles.panelHeader}>
             <div style={{ fontWeight: 700 }}>Audit Entries</div>
-            <button onClick={() => { clearAuditLog(); reload(); }} style={styles.clearBtn}>
+            <button
+              onClick={() => { clearAuditLog(); reload(); }}
+              style={styles.clearBtn}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+              onFocus={(e) => { e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`; }}
+              onBlur={(e) => { e.currentTarget.style.boxShadow = "none"; }}
+            >
               Clear
             </button>
           </div>
@@ -77,13 +88,15 @@ const styles = {
     marginTop: "16px",
   },
   toggle: {
-    padding: "8px 12px",
+    padding: "10px 14px",
     borderRadius: "var(--radius-sm)",
     background: "var(--color-secondary)",
     color: "#fff",
-    border: "none",
+    border: "1px solid transparent",
     cursor: "pointer",
     boxShadow: "var(--shadow-sm)",
+    outline: "none",
+    transition: "var(--transition-fast)",
   },
   panel: {
     marginTop: "10px",

@@ -50,7 +50,18 @@ export default function SearchBar({ onSearch, busy }) {
           value={value}
           onChange={handleChange}
           disabled={busy}
-          style={styles.input}
+          style={{
+            ...styles.input,
+            ...(busy ? { background: "var(--color-background)" } : {}),
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`;
+            e.currentTarget.style.borderColor = "var(--color-primary)";
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+            e.currentTarget.style.borderColor = "var(--color-border)";
+          }}
         />
         <button
           aria-label="search-button"
@@ -59,6 +70,18 @@ export default function SearchBar({ onSearch, busy }) {
           style={{
             ...styles.button,
             ...(busy ? styles.buttonDisabled : {}),
+          }}
+          onMouseEnter={(e) => {
+            if (!busy) e.currentTarget.style.background = "var(--color-primary-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--color-primary)";
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`;
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = "var(--shadow-sm)";
           }}
         >
           {busy ? "Searching..." : "Search"}
@@ -75,9 +98,11 @@ const styles = {
     display: "flex",
     gap: "8px",
     width: "100%",
+    flexWrap: "wrap",
   },
   input: {
     flex: 1,
+    minWidth: 0,
     padding: "12px 14px",
     borderRadius: "var(--radius-sm)",
     border: "1px solid var(--color-border)",
@@ -91,13 +116,14 @@ const styles = {
   button: {
     padding: "12px 18px",
     borderRadius: "var(--radius-sm)",
-    border: "none",
+    border: "1px solid transparent",
     color: "#fff",
     background: "var(--color-primary)",
     cursor: "pointer",
     fontWeight: 600,
     transition: "var(--transition-fast)",
     boxShadow: "var(--shadow-sm)",
+    outline: "none",
   },
   buttonDisabled: {
     opacity: 0.7,

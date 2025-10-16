@@ -75,6 +75,14 @@ export default function Login() {
             style={styles.input}
             placeholder="you@example.com or username"
             autoComplete="username"
+            onFocus={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`;
+              e.currentTarget.style.borderColor = "var(--color-primary)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+              e.currentTarget.style.borderColor = "var(--color-border)";
+            }}
           />
 
           <label htmlFor="login-password" style={styles.label}>Password</label>
@@ -87,11 +95,37 @@ export default function Login() {
             style={styles.input}
             placeholder="Enter password"
             autoComplete="current-password"
+            onFocus={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`;
+              e.currentTarget.style.borderColor = "var(--color-primary)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+              e.currentTarget.style.borderColor = "var(--color-border)";
+            }}
           />
 
           {error && <div role="alert" style={styles.error}>{error}</div>}
 
-          <button type="submit" aria-label="login-submit" style={styles.button}>Login</button>
+          <button
+            type="submit"
+            aria-label="login-submit"
+            style={styles.button}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--color-primary-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "var(--color-primary)";
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 0 3px var(--color-focus)`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+            }}
+          >
+            Login
+          </button>
 
           <div style={styles.hint} role="note">
             Mode: {(process.env.AUTH_MODE || process.env.REACT_APP_AUTH_MODE || "mock")} • In mock mode, any non-empty credentials are accepted.

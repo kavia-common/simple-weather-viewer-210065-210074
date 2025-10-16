@@ -98,9 +98,22 @@ See src/services/WeatherService.js.
 - src/__tests__/: Unit and integration tests for components, utilities, and service
 
 ## Theming and Accessibility
-- The Ocean Professional theme is applied at runtime via CSS variables (applyThemeToDocument in src/styles/theme.js).
-- Buttons, inputs, and links adhere to accessible color contrast and include aria-labels for testing and assistive technologies.
+- Theme tokens are defined in src/styles/theme.js and applied to CSS variables at runtime via `applyThemeToDocument()`. Tokens include palette (primary, secondary, success, error, background, surface, text, subtleText, border, focusRing), radius (sm, md, lg, pill), shadows (sm, md, lg, xl), typography (sizes and weights), and icon sizes (sm, md, lg).
+- Components consume tokens via CSS variables in inline styles to ensure consistency. You can adjust brand colors and radii in one place.
+- Global CSS variables are mirrored in src/index.css; focus styles use `--color-focus` to provide visible outlines that meet contrast requirements.
+- Buttons, inputs, and links include hover and focus states; tap targets are ≥ 40px in height for mobile.
 - Validation messages are displayed using role="alert" for screen reader support.
+- Background uses a subtle gradient per Ocean Professional (from-blue-500/10 to gray-50), with centered responsive card layout.
+- Mock mode indicator is styled as a subtle pill and WeatherCard shows a gentle banner when in mock mode.
+
+### Customizing the Theme
+- Edit src/styles/theme.js to change:
+  - Colors: `palette.primary`, `palette.secondary`, etc.
+  - Radii: `radius.sm|md|lg|pill`
+  - Shadows: `shadow.sm|md|lg|xl`
+  - Typography scale/weights: `typography.scale` and `typography.weight`
+  - Icon sizes: `icon.sm|md|lg`
+- Run the app; tokens are applied on load. No code changes in components are needed if you keep variable names the same.
 
 ## Error Handling
 - Validation prevents empty or invalid queries from invoking the WeatherService.
